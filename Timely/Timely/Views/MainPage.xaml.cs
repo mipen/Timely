@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Input;
 using Timely.ViewModels;
 using Xamarin.Forms;
 
@@ -11,6 +12,19 @@ namespace Timely
 {
     public partial class MainPage : ContentPage
     {
+        #region InitialiseCommandProperty
+        public static readonly BindableProperty InitialiseCommandProperty = BindableProperty.Create(
+            nameof(InitialiseCommand),
+            typeof(ICommand),
+            typeof(MainPage),
+            null,
+            BindingMode.OneWay,
+            null,
+            null,
+            null,
+            null,
+            null);
+        #endregion
         private Image imgBg;
         private Image imgSearchBanner;
         private ImageButton imgActivityBtn;
@@ -22,10 +36,23 @@ namespace Timely
         private Label labelTimeElapsed;
         private AppListView listViewActivites;
 
+        public ICommand InitialiseCommand
+        {
+            get
+            {
+                return (ICommand)GetValue(InitialiseCommandProperty);
+            }
+            set
+            {
+                SetValue(InitialiseCommandProperty, value);
+            }
+        }
+
         public MainPage()
         {
             InitializeComponent();
             BindingContext = new MainViewModel(Navigation);
+            this.SetBinding(InitialiseCommandProperty, "InitialiseCommand");
             InitialiseElements();
         }
 
@@ -267,17 +294,10 @@ namespace Timely
             #endregion
         }
 
-        //private async Task AddActivityBtn_Tapped()
-        //{
-        //    await imgAddActivityBtn.ScaleTo(0.9, 50, Easing.Linear);
-        //    await Task.Delay(100);
-        //    await imgAddActivityBtn.ScaleTo(1, 50, Easing.BounceOut);
-        //    await Navigation.PushModalAsync(new NewActivityPage());
-        //}
-
         protected override void OnAppearing()
         {
             base.OnAppearing();
+            InitialiseCommand?.Execute(this);
         }
     }
 }
