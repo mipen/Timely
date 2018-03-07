@@ -29,7 +29,7 @@ namespace Timely.ViewModels
         {
             get
             {
-                return new Command(async () =>
+                return new Command(() =>
                 {
                     Activity a = new Activity();
                     a.ActivityName = ActivityName;
@@ -41,7 +41,7 @@ namespace Timely.ViewModels
                     ReloadDatabaseTask = Task.Run(async () =>
                     {
                         await App.ActivityDatabase.InsertAsync(a);
-                        ReloadDatabase();
+                        await ReloadDatabase();
                     });
 
                 });

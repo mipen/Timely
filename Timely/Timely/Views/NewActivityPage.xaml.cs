@@ -12,6 +12,8 @@ namespace Timely
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class NewActivityPage : ContentPage
     {
+        private Entry entryName;
+
         public NewActivityPage()
         {
             BindingContext = new NewActivityViewModel(Navigation);
@@ -60,7 +62,7 @@ namespace Timely
                 HorizontalTextAlignment = TextAlignment.Center,
                 TextColor = Constants.TextColor
             };
-            Entry entryName = new Entry()
+            entryName = new Entry()
             {
                 FontFamily = "Roboto",
                 HorizontalTextAlignment = TextAlignment.Center,
@@ -199,5 +201,10 @@ namespace Timely
             );
         }
 
+        protected override void OnAppearing()
+        {
+            base.OnAppearing();
+            entryName.Focus();
+        }
     }
 }

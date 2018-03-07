@@ -41,6 +41,7 @@ namespace Timely
         /// <summary>
         /// Returns the current active activity period. If there is no active period, returns null
         /// </summary>
+        [Ignore]
         public ActivityPeriod CurrentActiveActivityPeriod
         {
             get
@@ -59,6 +60,7 @@ namespace Timely
                     return null;
             }
         }
+        [Ignore]
         public ActivityPeriod LastCompletedPeriod
         {
             get
@@ -124,6 +126,7 @@ namespace Timely
                 category = value;
             }
         }
+        [Ignore]
         public string TimeElapsedDisplay
         {
             get
@@ -139,6 +142,7 @@ namespace Timely
         /// <summary>
         /// Gets the latest activity period start time (HH:mm)
         /// </summary>
+        [Ignore]
         public string StartTimeDisplay
         {
             get
@@ -152,6 +156,7 @@ namespace Timely
         /// <summary>
         /// Get the latest activity period end time (HH:mm)
         /// </summary>
+        [Ignore]
         public string EndTimeDisplay
         {
             get
@@ -162,6 +167,7 @@ namespace Timely
                     return "";
             }
         }
+        [Ignore]
         public string LastStartDateDisplay
         {
             get
@@ -172,6 +178,7 @@ namespace Timely
                     return "";
             }
         }
+        [Ignore]
         public string LastEndDateDisplay
         {
             get

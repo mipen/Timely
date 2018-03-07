@@ -46,11 +46,10 @@ namespace Timely.ViewModels
             {
                 return new Command(() =>
                 {
-                    if (Act.Active)
+                    if (!Act.Active)
                     {
                         //Start button pressed
-                        ActivityPeriod ap = Act.CurrentActiveActivityPeriod;
-                        ap = new ActivityPeriod();
+                        ActivityPeriod ap = new ActivityPeriod();
                         ap.StartTime = DateTime.Now;
                         Act.ActivityPeriods.Add(ap);
                         OnPropertyChanged("History");
@@ -100,7 +99,7 @@ namespace Timely.ViewModels
         {
             get
             {
-                if (Act.Active)
+                if (!Act.Active)
                     return ImageSource.FromFile("startbtn.png");
                 else
                     return ImageSource.FromFile("pausebtn.png");
@@ -223,11 +222,14 @@ namespace Timely.ViewModels
             Navigation = navigation;
             Act = act;
             if (Act.Active)
+            {
+                OnPropertyChanged("ActivityBtnImageSource");
                 Device.StartTimer(TimeSpan.FromSeconds(1), () =>
                 {
                     OnPropertyChanged("ElapsedTime");
                     return Act.Active;
                 });
+            }
         }
 
         private void OnPropertyChanged(string propertyName)

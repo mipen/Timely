@@ -12,7 +12,7 @@ namespace Timely
     public partial class App : Application
     {
         private static ActivityDatabase activityDatabase;
-        public static readonly string DBPath = "newdb.db3";
+        public static readonly string DBPath = "timelydb.db3";
         private static SQLiteAsyncConnection database;
         public static SQLiteAsyncConnection Database
         {
@@ -37,7 +37,6 @@ namespace Timely
         public App()
         {
             //File.Delete(DependencyService.Get<IFileHelper>().GetLocalFilePath(DBPath));
-            //File.Delete(DependencyService.Get<IFileHelper>().GetLocalFilePath("TimelyDatabase.db3"));
             InitializeComponent();
             InitDatabase();
             MainPage = new MainPage();

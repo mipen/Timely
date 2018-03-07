@@ -25,16 +25,6 @@ namespace Timely
             null,
             null);
         #endregion
-        private Image imgBg;
-        private Image imgSearchBanner;
-        private ImageButton imgActivityBtn;
-        private ImageButton imgAddActivityBtn;
-        private RelativeLayout rlActivityInProgress;
-        private Label labelActivityName;
-        private Label labelActivityCategory;
-        private Label labelTimeStarted;
-        private Label labelTimeElapsed;
-        private AppListView listViewActivites;
 
         public ICommand InitialiseCommand
         {
@@ -59,24 +49,24 @@ namespace Timely
         private void InitialiseElements()
         {
             #region ViewInit
-            imgBg = new Image()
+            Image imgBg = new Image()
             {
                 Source = "mainpagebg.png",
                 Aspect = Aspect.Fill
             };
-            imgSearchBanner = new Image()
+            Image imgSearchBanner = new Image()
             {
                 Source = "mainpagesearchbg.png",
                 Aspect = Aspect.Fill
             };
-            rlActivityInProgress = new RelativeLayout();
-            imgActivityBtn = new ImageButton()
+            RelativeLayout rlActivityInProgress = new RelativeLayout();
+            ImageButton imgActivityBtn = new ImageButton()
             {
                 Source = "pausebtnsmall.png",
                 Aspect = Aspect.Fill
             };
             //TODO:: This
-            labelActivityName = new Label()
+            Label labelActivityName = new Label()
             {
                 Text = "Activity",
                 HorizontalTextAlignment = TextAlignment.Center,
@@ -84,7 +74,7 @@ namespace Timely
                 FontSize = 28,
                 FontFamily = "Roboto"
             };
-            labelActivityCategory = new Label()
+            Label labelActivityCategory = new Label()
             {
                 Text = "Category",
                 HorizontalTextAlignment = TextAlignment.Center,
@@ -92,7 +82,7 @@ namespace Timely
                 FontSize = 20,
                 FontFamily = "Roboto"
             };
-            labelTimeStarted = new Label()
+            Label labelTimeStarted = new Label()
             {
                 Text = "Started",
                 HorizontalTextAlignment = TextAlignment.Center,
@@ -100,7 +90,7 @@ namespace Timely
                 FontSize = 16,
                 FontFamily = "Roboto"
             };
-            labelTimeElapsed = new Label()
+            Label labelTimeElapsed = new Label()
             {
                 Text = "Time Elapsed",
                 HorizontalTextAlignment = TextAlignment.Center,
@@ -109,7 +99,7 @@ namespace Timely
                 FontFamily = "Roboto",
                 TextColor = Constants.TotalTimeElapsedColor
             };
-            listViewActivites = new AppListView()
+            AppListView listViewActivites = new AppListView()
             {
                 HasUnevenRows = true,
                 SeparatorVisibility = SeparatorVisibility.None,
@@ -121,7 +111,7 @@ namespace Timely
             listViewActivites.SetBinding(ListView.ItemsSourceProperty, "Activities");
             listViewActivites.SetBinding(ListView.IsRefreshingProperty, "LoadingData");
 
-            imgAddActivityBtn = new ImageButton()
+            ImageButton imgAddActivityBtn = new ImageButton()
             {
                 Source = "addactivitybtn.png",
                 Aspect = Aspect.Fill
@@ -297,7 +287,7 @@ namespace Timely
         protected override void OnAppearing()
         {
             base.OnAppearing();
-            InitialiseCommand?.Execute(this);
+            //InitialiseCommand?.Execute(this);
         }
     }
 }

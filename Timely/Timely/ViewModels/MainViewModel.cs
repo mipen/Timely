@@ -115,18 +115,6 @@ namespace Timely.ViewModels
         {
             Navigation = navigation;
             App.ActivityDatabase.PropertyChanged += Activities_PropertyChanged;
-            //ReloadDatabaseTask = Task.Run(async () =>
-            //{
-            //    Thread.Sleep(3000);
-            //    await ReloadDatabase();
-
-            //    //Debug stuff
-            //    //Thread.Sleep(2000);
-            //    //Activity a = new Activity() { ActivityName = "Test", Category = "Test" };
-            //    //a.ActivityPeriods.Add(new ActivityPeriod() { StartTime = DateTime.Now, EndTime = DateTime.Now.AddHours(-2) });
-            //    //await App.ActivityDatabase.InsertAsync(a);
-            //    //await App.ActivityDatabase.InsertPeriodAsync(new ActivityPeriod() { StartTime = DateTime.Now });
-            //});
         }
 
         public void OnPropertyChanged(string propertyName)
