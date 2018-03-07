@@ -67,9 +67,10 @@ namespace Timely
             {
                 if (ActivityPeriods.Count > 0)
                 {
-                    return (from t in ActivityPeriodsSorted
+                    var q = (from t in ActivityPeriodsSorted
                             where t.Active == false
-                            select t).First();
+                            select t);
+                    return q.Count() > 0 ? q.First() : null;
                 }
                 else
                     return null;

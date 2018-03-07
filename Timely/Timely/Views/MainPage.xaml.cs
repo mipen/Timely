@@ -12,6 +12,7 @@ namespace Timely
 {
     public partial class MainPage : ContentPage
     {
+        private bool startup = true;
         #region InitialiseCommandProperty
         public static readonly BindableProperty InitialiseCommandProperty = BindableProperty.Create(
             nameof(InitialiseCommand),
@@ -287,7 +288,11 @@ namespace Timely
         protected override void OnAppearing()
         {
             base.OnAppearing();
-            //InitialiseCommand?.Execute(this);
+            if (startup)
+            {
+            InitialiseCommand?.Execute(this);
+                startup = false;
+            }
         }
     }
 }
