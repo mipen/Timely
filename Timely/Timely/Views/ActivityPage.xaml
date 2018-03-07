@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+    <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+                 xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+                 x:local="clr-namespace:Timely;assembly=Timely"
+                 x:Class="Timely.ActivityPage">
+        <ContentPage.Content>
+            <RelativeLayout
+                x:Name="relLayout">
+            </RelativeLayout>
+        </ContentPage.Content>
+    </ContentPage>

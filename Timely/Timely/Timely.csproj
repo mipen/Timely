@@ -1,0 +1,88 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <ApplicationIcon />
+    <OutputType>Library</OutputType>
+    <StartupObject />
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Images\acceptbtn.png" />
+    <None Remove="Images\activitypagebg.png" />
+    <None Remove="Images\addactivitybtn.png" />
+    <None Remove="Images\backarrow.png" />
+    <None Remove="Images\clearhistorybtn.png" />
+    <None Remove="Images\deletebtn.png" />
+    <None Remove="Images\disabledacceptbtn.png" />
+    <None Remove="Images\editbtn.png" />
+    <None Remove="Images\entrybg.png" />
+    <None Remove="Images\entrynotifybg.png" />
+    <None Remove="Images\gradientbg.png" />
+    <None Remove="Images\historyseparator.png" />
+    <None Remove="Images\mainpagebg.png" />
+    <None Remove="Images\mainpagesearchbg.png" />
+    <None Remove="Images\mainpageseparator.png" />
+    <None Remove="Images\pausebtn.png" />
+    <None Remove="Images\pausebtnsmall.png" />
+    <None Remove="Images\searchbarbg.png" />
+    <None Remove="Images\sortbox.png" />
+    <None Remove="Images\startbtn.png" />
+    <None Remove="tapet_2018-02-26_23-37-18_841_2880x2560.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Images\acceptbtn.png" />
+    <EmbeddedResource Include="Images\activitypagebg.png" />
+    <EmbeddedResource Include="Images\addactivitybtn.png" />
+    <EmbeddedResource Include="Images\backarrow.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Images\clearhistorybtn.png" />
+    <EmbeddedResource Include="Images\deletebtn.png" />
+    <EmbeddedResource Include="Images\disabledacceptbtn.png" />
+    <EmbeddedResource Include="Images\editbtn.png" />
+    <EmbeddedResource Include="Images\entrybg.png" />
+    <EmbeddedResource Include="Images\entrynotifybg.png" />
+    <EmbeddedResource Include="Images\historyseparator.png" />
+    <EmbeddedResource Include="Images\mainpagebg.png" />
+    <EmbeddedResource Include="Images\mainpagesearchbg.png" />
+    <EmbeddedResource Include="Images\mainpageseparator.png" />
+    <EmbeddedResource Include="Images\pausebtn.png" />
+    <EmbeddedResource Include="Images\pausebtnsmall.png" />
+    <EmbeddedResource Include="Images\gradientbg.png" />
+    <EmbeddedResource Include="Images\searchbarbg.png" />
+    <EmbeddedResource Include="Images\sortbox.png" />
+    <EmbeddedResource Include="Images\startbtn.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="sqlite-net-pcl" Version="1.4.118" />
+    <PackageReference Include="Xamarin.Forms" Version="2.5.0.280555" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Condition=" '$(EnableDefaultCompileItems)' == 'true' " Update="App.xaml.cs">
+      <DependentUpon>*.xaml</DependentUpon>
+    </Compile>
+    <Compile Condition=" '$(EnableDefaultCompileItems)' == 'true' " Update="Views\MainPage.xaml.cs">
+      <DependentUpon>*.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\EditActivityPage.xaml.cs">
+      <DependentUpon>EditActivityPage.xaml</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="Views\DbTestPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Views\ActivityPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Views\NewActivityPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+  </ItemGroup>
+</Project>

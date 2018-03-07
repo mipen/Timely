@@ -1,0 +1,32 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+    <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+                 xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+                 x:Class="Timely.DbTestPage">
+        <ContentPage.Content>
+            <StackLayout>
+                <Entry
+                    x:Name="entryActivityName"
+                    Placeholder="Activity Name"/>
+                <Entry
+                    x:Name="entryCategory"
+                    Placeholder="Category"/>
+                <Button
+                    x:Name="btnSave"
+                    Text="Save"/>
+                <Label
+                    x:Name="labelPeopleGenerated"/>
+                <Label
+                    x:Name="labelElapsedTime"/>
+                <ListView
+                    x:Name="listView"
+                    VerticalOptions="FillAndExpand"
+                    HasUnevenRows="True"
+                    >
+                </ListView>
+                <Button
+                    x:Name="btnPause"
+                    Text="Pause"
+                    VerticalOptions="End"/>
+            </StackLayout>
+        </ContentPage.Content>
+    </ContentPage>
