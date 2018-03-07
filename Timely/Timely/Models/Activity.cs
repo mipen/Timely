@@ -149,7 +149,7 @@ namespace Timely
             get
             {
                 if (LastCompletedPeriod != null)
-                    return LastCompletedPeriod.StartTime.ToString("HH:mm");
+                    return LastCompletedPeriod.StartTime.ToString(Constants.TimeFormat);
                 else
                     return "";
             }
@@ -163,7 +163,7 @@ namespace Timely
             get
             {
                 if (LastCompletedPeriod != null)
-                    return LastCompletedPeriod.EndTime.ToString("HH:mm");
+                    return LastCompletedPeriod.EndTime.ToString(Constants.TimeFormat);
                 else
                     return "";
             }
@@ -174,7 +174,7 @@ namespace Timely
             get
             {
                 if (LastCompletedPeriod != null)
-                    return LastCompletedPeriod.StartTime.ToString(@"dd\/ MM\/ yy");
+                    return LastCompletedPeriod.StartTime.ToString(Constants.DateFormat);
                 else
                     return "";
             }
@@ -185,7 +185,7 @@ namespace Timely
             get
             {
                 if (LastCompletedPeriod != null && LastCompletedPeriod.Active == false)
-                    return LastCompletedPeriod.EndTime.ToString(@"dd\/ MM\/ yy");
+                    return LastCompletedPeriod.EndTime.ToString(Constants.DateFormat);
                 else
                     return "";
             }

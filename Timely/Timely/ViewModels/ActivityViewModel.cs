@@ -12,8 +12,8 @@ namespace Timely.ViewModels
 {
     public class ActivityViewModel : INotifyPropertyChanged
     {
-        private Activity act;
         public event PropertyChangedEventHandler PropertyChanged;
+        private Activity act;
         private bool activityButtonEnabled = true;
         private bool editActivityButtonEnabled = true;
         private bool backButtonEnabled = true;
@@ -57,10 +57,12 @@ namespace Timely.ViewModels
                         OnPropertyChanged("StartTimeVisible");
                         OnPropertyChanged("ActivityBtnImageSource");
                         OnPropertyChanged("TimeElapsedColor");
-                        OnPropertyChanged("ElapsedTime");
+                        OnPropertyChanged("TimeElapsed");
                         Device.StartTimer(TimeSpan.FromSeconds(1), () =>
                         {
-                            OnPropertyChanged("ElapsedTime");
+                            OnPropertyChanged("TimeElapsed");
+                            if (Act.Active)
+                                Act.CurrentActiveActivityPeriod.OnPropertyChanged("TimeElapsedDisplay");
                             return Act.Active;
                         });
                         App.ActivityDatabase.InsertAsync(Act);
@@ -76,7 +78,7 @@ namespace Timely.ViewModels
                         OnPropertyChanged("StartTimeVisible");
                         OnPropertyChanged("ActivityBtnImageSource");
                         OnPropertyChanged("TimeElapsedColor");
-                        OnPropertyChanged("ElapsedTime");
+                        OnPropertyChanged("TimeElapsed");
                         App.ActivityDatabase.InsertAsync(Act);
                         ActivityButtonEnabled = true;
                     }
@@ -92,6 +94,23 @@ namespace Timely.ViewModels
                     await Navigation.PushModalAsync(new EditActivityPage(Act, PropertyChanged));
                     Thread.Sleep(200);
                     EditActivityButtonEnabled = true;
+                });
+            }
+        }
+        public ICommand HistoryItemTappedCommand
+        {
+            get
+            {
+                return new Command((object o) =>
+                {
+                    if (o != null)
+                    {
+                        ActivityPeriod ap = o as ActivityPeriod;
+                        if (ap != null)
+                        {
+                            Navigation.PushModalAsync(new EditActivityPeriodPage(ap));
+                        }
+                    }
                 });
             }
         }
@@ -162,7 +181,7 @@ namespace Timely.ViewModels
                     return "";
             }
         }
-        public string ElapsedTime
+        public string TimeElapsed
         {
             get
             {
@@ -226,7 +245,9 @@ namespace Timely.ViewModels
                 OnPropertyChanged("ActivityBtnImageSource");
                 Device.StartTimer(TimeSpan.FromSeconds(1), () =>
                 {
-                    OnPropertyChanged("ElapsedTime");
+                    OnPropertyChanged("TimeElapsed");
+                    if (Act.Active)
+                        Act.CurrentActiveActivityPeriod.OnPropertyChanged("TimeElapsedDisplay");
                     return Act.Active;
                 });
             }

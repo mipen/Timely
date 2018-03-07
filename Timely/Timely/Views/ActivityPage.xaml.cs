@@ -13,23 +13,15 @@ namespace Timely
 {
     public partial class ActivityPage : ContentPage
     {
-        private Image imgBg;
-        private ImageButton imgActivityBtn;
-        private Label labelActivityName;
-        private Label labelActivityCategory;
-        private Label labelStartedTime;
-        private Label labelElapsedTime;
-        private Label labelHistory;
-        private ListView listViewHistory;
 
         public ActivityPage(Activity act)
         {
             BindingContext = new ActivityViewModel(act, Navigation);
             InitializeComponent();
-            InitialiseViews();
+            InitialiseElements();
         }
 
-        private void InitialiseViews()
+        private void InitialiseElements()
         {
             #region ViewInitialisation
             ImageButton imgBackBtn = new ImageButton()
@@ -48,14 +40,14 @@ namespace Timely
             imgEditActivityBtn.SetBinding(ImageButton.TappedCommandProperty, "EditActivityButtonCommand");
             imgEditActivityBtn.SetBinding(ImageButton.IsEnabledProperty, "EditActivityButtonEnabled", BindingMode.TwoWay);
 
-            imgBg = new Image()
+            Image imgBg = new Image()
             {
                 Source = "activitypagebg.png",
                 VerticalOptions = LayoutOptions.Start,
                 Aspect = Aspect.Fill
             };
 
-            imgActivityBtn = new ImageButton()
+            ImageButton imgActivityBtn = new ImageButton()
             {
                 Aspect = Aspect.Fill
             };
@@ -63,7 +55,7 @@ namespace Timely
             imgActivityBtn.SetBinding(ImageButton.TappedCommandProperty, "ActivityButtonCommand");
             imgActivityBtn.SetBinding(ImageButton.IsEnabledProperty, "ActivityButtonEnabled", BindingMode.TwoWay);
 
-            labelActivityName = new Label()
+            Label labelActivityName = new Label()
             {
                 HorizontalTextAlignment = TextAlignment.Center,
                 VerticalTextAlignment = TextAlignment.Center,
@@ -72,7 +64,7 @@ namespace Timely
             };
             labelActivityName.SetBinding(Label.TextProperty, "ActivityName", BindingMode.OneWay);
 
-            labelActivityCategory = new Label()
+            Label labelActivityCategory = new Label()
             {
                 HorizontalTextAlignment = TextAlignment.Center,
                 VerticalTextAlignment = TextAlignment.Center,
@@ -81,7 +73,7 @@ namespace Timely
             };
             labelActivityCategory.SetBinding(Label.TextProperty, "Category", BindingMode.OneWay);
 
-            labelStartedTime = new Label()
+            Label labelStartedTime = new Label()
             {
                 Text = "Started time",
                 HorizontalTextAlignment = TextAlignment.Center,
@@ -92,7 +84,7 @@ namespace Timely
             labelStartedTime.SetBinding(Label.IsVisibleProperty, "StartTimeVisible");
             labelStartedTime.SetBinding(Label.TextProperty, "StartTimeDisplay");
 
-            labelElapsedTime = new Label()
+            Label labelElapsedTime = new Label()
             {
                 HorizontalTextAlignment = TextAlignment.Center,
                 VerticalTextAlignment = TextAlignment.Center,
@@ -100,10 +92,10 @@ namespace Timely
                 FontFamily = "Roboto",
                 TextColor = Constants.TotalTimeElapsedColor
             };
-            labelElapsedTime.SetBinding(Label.TextProperty, "ElapsedTime", BindingMode.OneWay);
+            labelElapsedTime.SetBinding(Label.TextProperty, "TimeElapsed", BindingMode.OneWay);
             labelElapsedTime.SetBinding(Label.TextColorProperty, "TimeElapsedColor");
 
-            labelHistory = new Label()
+            Label labelHistory = new Label()
             {
                 Text = "History",
                 HorizontalTextAlignment = TextAlignment.Start,
@@ -113,14 +105,16 @@ namespace Timely
                 TextColor = Constants.HistoryTextColor
             };
 
-            listViewHistory = new ListView()
+            AppListView listViewHistory = new AppListView()
             {
                 HasUnevenRows = true,
                 SeparatorVisibility = SeparatorVisibility.None,
                 ItemTemplate = new DataTemplate(typeof(ActivityPeriodCell))
             };
-            listViewHistory.SetBinding(ListView.ItemsSourceProperty, "History");
             listViewHistory.ItemSelected += (sender, e) => { ((ListView)sender).SelectedItem = null; };
+            //listViewHistory.SetBinding(ListView.SelectedItemProperty, "SelectedAP", BindingMode.OneWayToSource);
+            listViewHistory.SetBinding(AppListView.TapCommandProperty, "HistoryItemTappedCommand",BindingMode.OneWay);
+            listViewHistory.SetBinding(ListView.ItemsSourceProperty, "History");
             #endregion
             //Methods goes -> X, Y, Width, Height
             //Add bg image

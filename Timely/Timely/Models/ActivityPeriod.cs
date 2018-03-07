@@ -80,7 +80,7 @@ namespace Timely
         {
             get
             {
-                return StartTime.ToString(@"dd\/MM\/yy");
+                return StartTime.ToString(Constants.DateFormat);
             }
         }
         [Ignore]
@@ -88,7 +88,7 @@ namespace Timely
         {
             get
             {
-                return StartTime.ToString("HH:mm");
+                return StartTime.ToString(Constants.TimeFormat);
             }
         }
         [Ignore]
@@ -96,7 +96,7 @@ namespace Timely
         {
             get
             {
-                return EndTime.ToString("HH:mm");
+                return EndTime.ToString(Constants.TimeFormat);
             }
         }
         [Ignore]

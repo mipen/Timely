@@ -14,5 +14,10 @@ namespace Timely
         public static readonly Color HistoryTextColor = Color.FromHex("#9D9D9D");
         public static readonly Color ActivityCellTextColor = Color.FromHex("#404040");
         #endregion
+        #region FormatStrings
+        public static readonly string DateFormat = @"dd\/ MM\/ yy";
+        public static readonly string TimeFormat = "hh:mm tt";
+        public static readonly string TimeSecondsFormat = "hh:mm:ss tt";
+        #endregion
     }
 }

@@ -15,7 +15,6 @@ namespace Timely.ViewModels
     {
         public event PropertyChangedEventHandler PropertyChanged;
 
-        private object selectedActivity;
         private ObservableCollection<Activity> activities = new ObservableCollection<Activity>();
         private bool loadingData = true;
         private bool addActivityButtonEnabled = true;
@@ -49,11 +48,11 @@ namespace Timely.ViewModels
         {
             get
             {
-                return new Command(() =>
+                return new Command((object o) =>
                 {
-                    if (SelectedActivity != null)
+                    if (o != null)
                     {
-                        Activity act = SelectedActivity as Activity;
+                        Activity act = o as Activity;
                         if (act != null)
                         {
                             Navigation.PushModalAsync(new ActivityPage(act));
@@ -70,17 +69,6 @@ namespace Timely.ViewModels
                 {
                     await ReloadDatabase();
                 });
-            }
-        }
-        public object SelectedActivity
-        {
-            get
-            {
-                return selectedActivity;
-            }
-            set
-            {
-                selectedActivity = value;
             }
         }
         public bool LoadingData

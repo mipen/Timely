@@ -107,7 +107,6 @@ namespace Timely
                 ItemTemplate = new DataTemplate(typeof(ActivityCell))
             };
             listViewActivites.ItemSelected += (sender, e) => { ((ListView)sender).SelectedItem = null; };
-            listViewActivites.SetBinding(ListView.SelectedItemProperty, "SelectedActivity", BindingMode.OneWayToSource);
             listViewActivites.SetBinding(AppListView.TapCommandProperty, "ListViewItemTapped");
             listViewActivites.SetBinding(ListView.ItemsSourceProperty, "Activities");
             listViewActivites.SetBinding(ListView.IsRefreshingProperty, "LoadingData");
