@@ -29,38 +29,6 @@ namespace Timely
             InitialiseViews();
         }
 
-        public void imgActivityBtn_Tapped(object sender, EventArgs e)
-        {
-            //    if (act.CurrentActivityPeriod != null)
-            //    {
-            //        //Change the button image to start
-            //        imageActivityTimerButton.Source = startImage;
-            //        ActivityPeriod actP = act.CurrentActivityPeriod;
-            //        //End the current activity period
-            //        actP.EndTime = DateTime.Now;
-            //        //Update the elapsed time label
-            //        labelActivityElapsedTime.Text = act.ElapsedTimeDisplay;
-            //        //Update the database with activity
-            //        App.ActivityDatabase.SaveItem(act);
-            //        //Update database with activity period
-            //        App.ActivityPeriodDatabase.SaveItem(actP);
-            //        //Update list view
-            //        activityPeriods.Insert(0, actP);
-            //    }
-            //    else
-            //    {
-            //        ActivityPeriod actP = new ActivityPeriod(DateTime.Now);
-            //        //Add a new activity period
-            //        act.ActivityPeriods.Add(actP);
-            //        //change the button image to endImage
-            //        imageActivityTimerButton.Source = endImage;
-            //        //Update the database with activity
-            //        App.ActivityDatabase.SaveItem(act);
-            //        //Update the database with activity period
-            //        App.ActivityPeriodDatabase.SaveItem(actP);
-            //    }
-        }
-
         private void InitialiseViews()
         {
             #region ViewInitialisation
@@ -130,10 +98,10 @@ namespace Timely
                 VerticalTextAlignment = TextAlignment.Center,
                 FontSize = 28,
                 FontFamily = "Roboto",
-                TextColor = Constants.TotalElapsedTimeColor
+                TextColor = Constants.TotalTimeElapsedColor
             };
             labelElapsedTime.SetBinding(Label.TextProperty, "ElapsedTime", BindingMode.OneWay);
-            labelElapsedTime.SetBinding(Label.TextColorProperty, "ElapsedTimeColor");
+            labelElapsedTime.SetBinding(Label.TextColorProperty, "TimeElapsedColor");
 
             labelHistory = new Label()
             {

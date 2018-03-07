@@ -80,7 +80,7 @@ namespace Timely
                 VerticalTextAlignment = TextAlignment.Center,
                 FontSize = 28,
                 FontFamily = "Roboto",
-                TextColor = Constants.TotalElapsedTimeColor
+                TextColor = Constants.TotalTimeElapsedColor
             };
             listViewActivites = new AppListView()
             {

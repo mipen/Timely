@@ -43,7 +43,7 @@ namespace Timely
                 VerticalTextAlignment = TextAlignment.Center,
                 FontSize = 18,
                 FontFamily = "Roboto",
-                TextColor = Constants.TotalElapsedTimeColor
+                TextColor = Constants.TotalTimeElapsedColor
             };
             Image imgSep = new Image()
             {
@@ -55,7 +55,7 @@ namespace Timely
             labelName.SetBinding(Label.TextProperty, "ActivityName");
             labelDate.SetBinding(Label.TextProperty, "LastStartDateDisplay");
             labelTime.SetBinding(Label.TextProperty, "StartTimeDisplay");
-            labelTimeElapsed.SetBinding(Label.TextProperty, "ElapsedTimeDisplay");
+            labelTimeElapsed.SetBinding(Label.TextProperty, "TimeElapsedDisplay");
 
             //Add the views
             //Method goes -> X, Y, Width, Height

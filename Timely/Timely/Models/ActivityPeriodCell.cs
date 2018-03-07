@@ -54,8 +54,8 @@ namespace Timely
             labelEndTime.SetBinding(Label.TextProperty, "EndTimeDisplay");
             labelEndTime.SetBinding(Label.IsVisibleProperty, "EndTimeVisible");
             labelStartTime.SetBinding(Label.TextProperty, "StartTimeDisplay");
-            labelTimeElapsed.SetBinding(Label.TextProperty, "ElapsedTimeDisplay");
-            labelTimeElapsed.SetBinding(Label.TextColorProperty, "ElapsedTimeColor");
+            labelTimeElapsed.SetBinding(Label.TextProperty, "TimeElapsedDisplay");
+            labelTimeElapsed.SetBinding(Label.TextColorProperty, "TimeElapsedColor");
             //TODO:: Start a timer to update elapsed time display
 
             //Method goes -> X, Y, Width, Height

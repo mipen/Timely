@@ -10,7 +10,6 @@ namespace Timely
     public class ActivityPeriod : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
-        private bool active = false;
         private DateTime startTime = DateTime.MinValue;
         private DateTime endTime = DateTime.MinValue;
 
@@ -58,12 +57,12 @@ namespace Timely
             }
         }
         [Ignore]
-        public Color ElapsedTimeColor
+        public Color TimeElapsedColor
         {
             get
             {
                 if (Active)
-                    return Constants.InProgressElapsedTimeColor;
+                    return Constants.InProgressTimeElapsedColor;
                 else
                     return Constants.HistoryTextColor;
             }
@@ -101,7 +100,7 @@ namespace Timely
             }
         }
         [Ignore]
-        public string ElapsedTimeDisplay
+        public string TimeElapsedDisplay
         {
             get
             {
@@ -113,6 +112,7 @@ namespace Timely
                     return TimeElapsed.TotalSeconds.ToString("0") + "s";
             }
         }
+        [Ignore]
         public bool Active
         {
             get

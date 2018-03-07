@@ -17,7 +17,6 @@ namespace Timely
         private string activityName;
         private string category;
 
-        //TODO:: Clean this class up and rename TimeElapsed\ElapsedTime to something continuous
         public event PropertyChangedEventHandler PropertyChanged;
         [Ignore]
         public List<ActivityPeriod> ActivityPeriods
@@ -39,6 +38,27 @@ namespace Timely
                 return activityPeriods.OrderByDescending(x => x.StartTime).ToList();
             }
         }
+        /// <summary>
+        /// Returns the current active activity period. If there is no active period, returns null
+        /// </summary>
+        public ActivityPeriod CurrentActiveActivityPeriod
+        {
+            get
+            {
+                if (ActivityPeriods.Count > 0)
+                {
+                    var apList = (from t in ActivityPeriods
+                                  where t.Active == true
+                                  select t).ToList();
+                    if (apList.Count > 0)
+                        return apList.First();
+                    else
+                        return null;
+                }
+                else
+                    return null;
+            }
+        }
         public ActivityPeriod LastCompletedPeriod
         {
             get
@@ -53,6 +73,7 @@ namespace Timely
                     return null;
             }
         }
+        [Ignore]
         public TimeSpan TimeElapsed
         {
             get
@@ -67,6 +88,14 @@ namespace Timely
                     }
                 }
                 return totalTime;
+            }
+        }
+        [Ignore]
+        public bool Active
+        {
+            get
+            {
+                return CurrentActiveActivityPeriod != null;
             }
         }
         public string ActivityName
@@ -95,7 +124,7 @@ namespace Timely
                 category = value;
             }
         }
-        public string ElapsedTimeDisplay
+        public string TimeElapsedDisplay
         {
             get
             {
@@ -153,36 +182,10 @@ namespace Timely
                     return "";
             }
         }
-        /// <summary>
-        /// Returns the current active activity period. If there is no active period, returns null
-        /// </summary>
-        public ActivityPeriod CurrentActiveActivityPeriod
-        {
-            get
-            {
-                if (ActivityPeriods.Count > 0)
-                {
-                    var apList = (from t in ActivityPeriods
-                                  where t.Active == true
-                                  select t).ToList();
-                    if (apList.Count > 0)
-                        return apList.First();
-                    else
-                        return null;
-                }
-                else
-                    return null;
-            }
-        }
 
         public Activity()
         {
 
-        }
-
-        public Activity(string activityName)
-        {
-            ActivityName = activityName;
         }
 
         public virtual void OnPropertyChanged(string propertyName)
@@ -197,7 +200,7 @@ namespace Timely
             sb.AppendLine("Category: " + Category);
             sb.AppendLine("Start Time: " + StartTimeDisplay);
             sb.AppendLine("End Time: " + EndTimeDisplay);
-            sb.AppendLine("Time Elapsed: " + ElapsedTimeDisplay);
+            sb.AppendLine("Time Elapsed: " + TimeElapsedDisplay);
             return sb.ToString();
         }
     }

@@ -46,10 +46,10 @@ namespace Timely.ViewModels
             {
                 return new Command(() =>
                 {
-                    ActivityPeriod ap = Act.CurrentActiveActivityPeriod;
-                    if (ap == null)
+                    if (Act.Active)
                     {
                         //Start button pressed
+                        ActivityPeriod ap = Act.CurrentActiveActivityPeriod;
                         ap = new ActivityPeriod();
                         ap.StartTime = DateTime.Now;
                         Act.ActivityPeriods.Add(ap);
@@ -57,12 +57,12 @@ namespace Timely.ViewModels
                         OnPropertyChanged("StartTimeDisplay");
                         OnPropertyChanged("StartTimeVisible");
                         OnPropertyChanged("ActivityBtnImageSource");
-                        OnPropertyChanged("ElapsedTimeColor");
+                        OnPropertyChanged("TimeElapsedColor");
                         OnPropertyChanged("ElapsedTime");
                         Device.StartTimer(TimeSpan.FromSeconds(1), () =>
                         {
                             OnPropertyChanged("ElapsedTime");
-                            return Act.CurrentActiveActivityPeriod != null;
+                            return Act.Active;
                         });
                         App.ActivityDatabase.InsertAsync(Act);
                         ActivityButtonEnabled = true;
@@ -70,12 +70,13 @@ namespace Timely.ViewModels
                     else
                     {
                         //Stop button pressed
+                        ActivityPeriod ap = Act.CurrentActiveActivityPeriod;
                         ap.EndTime = DateTime.Now;
                         OnPropertyChanged("History");
                         OnPropertyChanged("StartTimeDisplay");
                         OnPropertyChanged("StartTimeVisible");
                         OnPropertyChanged("ActivityBtnImageSource");
-                        OnPropertyChanged("ElapsedTimeColor");
+                        OnPropertyChanged("TimeElapsedColor");
                         OnPropertyChanged("ElapsedTime");
                         App.ActivityDatabase.InsertAsync(Act);
                         ActivityButtonEnabled = true;
@@ -99,7 +100,7 @@ namespace Timely.ViewModels
         {
             get
             {
-                if (Act.CurrentActiveActivityPeriod == null)
+                if (Act.Active)
                     return ImageSource.FromFile("startbtn.png");
                 else
                     return ImageSource.FromFile("pausebtn.png");
@@ -112,14 +113,14 @@ namespace Timely.ViewModels
                 return new ObservableCollection<ActivityPeriod>(Act.ActivityPeriodsSorted);
             }
         }
-        public Color ElapsedTimeColor
+        public Color TimeElapsedColor
         {
             get
             {
                 if (StartTimeVisible)
-                    return Constants.InProgressElapsedTimeColor;
+                    return Constants.InProgressTimeElapsedColor;
                 else
-                    return Constants.TotalElapsedTimeColor;
+                    return Constants.TotalTimeElapsedColor;
             }
         }
         public string ActivityName
@@ -156,8 +157,8 @@ namespace Timely.ViewModels
         {
             get
             {
-                if (Act.CurrentActiveActivityPeriod != null)
-                    return Act.CurrentActiveActivityPeriod.StartTimeDisplay;
+                if (Act.Active)
+                    return $"Started {Act.CurrentActiveActivityPeriod.StartTimeDisplay}";
                 else
                     return "";
             }
@@ -167,16 +168,16 @@ namespace Timely.ViewModels
             get
             {
                 if (StartTimeVisible)
-                    return Act.CurrentActiveActivityPeriod.ElapsedTimeDisplay;
+                    return Act.CurrentActiveActivityPeriod.TimeElapsedDisplay;
                 else
-                    return Act.ElapsedTimeDisplay;
+                    return Act.TimeElapsedDisplay;
             }
         }
         public bool StartTimeVisible
         {
             get
             {
-                return Act.CurrentActiveActivityPeriod != null;
+                return Act.Active;
             }
         }
         public bool ActivityButtonEnabled
@@ -221,11 +222,11 @@ namespace Timely.ViewModels
         {
             Navigation = navigation;
             Act = act;
-            if (Act.CurrentActiveActivityPeriod != null)
+            if (Act.Active)
                 Device.StartTimer(TimeSpan.FromSeconds(1), () =>
                 {
                     OnPropertyChanged("ElapsedTime");
-                    return Act.CurrentActiveActivityPeriod != null;
+                    return Act.Active;
                 });
         }
 
