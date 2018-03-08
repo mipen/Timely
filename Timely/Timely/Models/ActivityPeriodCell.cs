@@ -56,7 +56,6 @@ namespace Timely
             labelStartTime.SetBinding(Label.TextProperty, "StartTimeDisplay");
             labelTimeElapsed.SetBinding(Label.TextProperty, "TimeElapsedDisplay");
             labelTimeElapsed.SetBinding(Label.TextColorProperty, "TimeElapsedColor");
-            //TODO:: Start a timer to update elapsed time display
 
             //Method goes -> X, Y, Width, Height
             //Add the controls
@@ -131,17 +130,6 @@ namespace Timely
                 return p.Width;
             }),
             Constraint.Constant(1));
-
-            //TODO:: Implement this delete action long press
-            //Add delete option
-            //MenuItem deleteAction = new MenuItem() { Text = "Delete", IsDestructive = true };
-            //deleteAction.SetBinding(MenuItem.CommandParameterProperty, new Binding("."));
-            //deleteAction.Clicked += async (sender, e) =>
-            // {
-            //     var mi = ((MenuItem)sender);
-            //     //Debug.WriteLine("Delete action pressed: " + mi.CommandParameter);
-            //     await ((ContentPage)(mi.Parent.Parent.Parent.Parent.Parent)).DisplayAlert("Long press", "Delete action pressed: " + mi.CommandParameter, "ok");
-            // };
 
             View = relLayout;
         }

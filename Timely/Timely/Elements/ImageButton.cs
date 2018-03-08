@@ -48,14 +48,12 @@ namespace Timely
         private async Task OnTapped(object sender, EventArgs e)
         {
             IsEnabled = false;
-            await this.ScaleTo(0.9, 50, Easing.Linear);
-            await Task.Delay(50);
-            await this.ScaleTo(1, 50, Easing.BounceOut);
+            await this.ScaleTo(0.9, 25, Easing.BounceIn);
+            await Task.Delay(25);
+            await this.ScaleTo(1, 25, Easing.BounceOut);
+            await this.ScaleTo(1.05, 15, Easing.BounceOut);
+            await this.ScaleTo(1, 10, Easing.BounceIn);
             TappedCommand?.Execute(this);
-            Task.Run(() =>
-            {
-                Thread.Sleep(500);
-            });
         }
     }
 }

@@ -47,8 +47,7 @@ namespace Timely
             };
             Image imgSep = new Image()
             {
-                Source = "mainpageseparator.png",
-                Aspect = Aspect.Fill
+                Source = "historyseparator.png"
             };
 
             //Set bindings

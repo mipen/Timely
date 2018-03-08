@@ -16,6 +16,8 @@ namespace Timely
         [PrimaryKey, AutoIncrement]
         public int ID { get; set; }
         public int ActivityID { get; set; }
+        [Ignore]
+        public Activity Activity { get; set; }
         public DateTime StartTime
         {
             get
@@ -26,6 +28,11 @@ namespace Timely
             {
                 startTime = value;
                 OnPropertyChanged("Active");
+                OnPropertyChanged("StartTime");
+                OnPropertyChanged("StartTimeDisplay");
+                OnPropertyChanged("TimeElapsed");
+                OnPropertyChanged("TimeElapsedDisplay");
+                OnPropertyChanged("DateDisplay");
             }
         }
         public DateTime EndTime
@@ -38,6 +45,11 @@ namespace Timely
             {
                 endTime = value;
                 OnPropertyChanged("Active");
+                OnPropertyChanged("EndTime");
+                OnPropertyChanged("EndTimeDisplay");
+                OnPropertyChanged("TimeElapsed");
+                OnPropertyChanged("TimeElapsedDisplay");
+                OnPropertyChanged("DateDisplay");
             }
         }
         [Ignore]

@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Windows.Input;
 using Xamarin.Forms;
 
@@ -9,27 +11,17 @@ namespace Timely.ViewModels
 {
     public class EditActivityViewModel : INotifyPropertyChanged
     {
+        public static readonly string DeleteConfirmationMessageString = "EditActivityDeleteButton";
+
         private string activityName;
         private string category;
         public event PropertyChangedEventHandler PropertyChanged;
         private event PropertyChangedEventHandler ForeignPropertyChanged;
         private bool acceptButtonEnabled = true;
-        private bool clearHistoryButtonEnabled = true;
         private bool deleteButtonEnabled = true;
 
         public INavigation Navigation { get; set; }
         public Activity Act { get; set; }
-        public ICommand ClearHistoryCommand
-        {
-            get
-            {
-                return new Command(() =>
-                {
-                    //TODO:: Implement this
-                    OnPropertyChanged("ClearHistoryButtonEnabled");
-                });
-            }
-        }
         public ICommand AcceptButtonCommand
         {
             get
@@ -47,7 +39,8 @@ namespace Timely.ViewModels
                             ForeignPropertyChanged(this, new PropertyChangedEventArgs("History"));
                         await App.ActivityDatabase.InsertAsync(Act);
                     }
-                    OnPropertyChanged("AcceptButtonEnabled");
+                    Thread.Sleep(200);
+                    AcceptButtonEnabled = true;
                 });
             }
         }
@@ -57,12 +50,12 @@ namespace Timely.ViewModels
             {
                 return new Command(async () =>
                 {
-                    //TODO:: Show confirmation box before deleting
-                    //TODO:: Implement deleting items better
-                    await App.ActivityDatabase.DeleteAsync(Act);
-                    Navigation.PopModalAsync();
-                    await Navigation.PopModalAsync();
-                    OnPropertyChanged("DeleteButtonEnabled");
+                    MessagingCenter.Send<EditActivityViewModel, ConfirmationData>(this, DeleteConfirmationMessageString, new ConfirmationData() { Title = "Delete Activity", Message = "Are you sure you wish to delete this activity? This action cannot be undone." });
+                    await Task.Run(() =>
+                    {
+                        Thread.Sleep(200);
+                        DeleteButtonEnabled = true;
+                    });
                 });
             }
         }
@@ -137,18 +130,6 @@ namespace Timely.ViewModels
                 OnPropertyChanged("AcceptButtonEnabled");
             }
         }
-        private bool ClearHistoryButtonEnabled
-        {
-            get
-            {
-                return clearHistoryButtonEnabled;
-            }
-            set
-            {
-                clearHistoryButtonEnabled = value;
-                OnPropertyChanged("ClearHistoryButtonEnabled");
-            }
-        }
         private bool DeleteButtonEnabled
         {
             get
@@ -174,6 +155,12 @@ namespace Timely.ViewModels
                     OnPropertyChanged("AcceptButtonImage");
             };
             ForeignPropertyChanged = propChanged;
+        }
+
+        public async Task DeleteActivity()
+        {
+            await App.ActivityDatabase.DeleteAsync(Act);
+            OnPropertyChanged("DeleteButtonEnabled");
         }
 
         public void OnPropertyChanged(string propertyName)

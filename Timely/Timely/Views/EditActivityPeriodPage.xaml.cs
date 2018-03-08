@@ -17,6 +17,24 @@ namespace Timely
             BindingContext = new EditActivityPeriodViewModel(Navigation, ap);
             InitializeComponent();
             InitialiseElements();
+            MessagingCenter.Subscribe<EditActivityPeriodViewModel, ConfirmationData>(this, EditActivityPeriodViewModel.AcceptMessageString, async (vm, cd) =>
+            {
+                var answer = await DisplayAlert(cd.Title, cd.Message, cd.Accept, cd.Cancel);
+                if (answer)
+                {
+                    await vm.AcceptChanges();
+                    await Navigation.PopModalAsync();
+                }
+            });
+            MessagingCenter.Subscribe<EditActivityPeriodViewModel, ConfirmationData>(this, EditActivityPeriodViewModel.DeleteMessageString, async (vm, cd) =>
+            {
+                var answer = await DisplayAlert(cd.Title, cd.Message, cd.Accept, cd.Cancel);
+                if (answer)
+                {
+                    await vm.DeleteActivityPeriod();
+                    await Navigation.PopModalAsync();
+                }
+            });
         }
 
         private void InitialiseElements()
@@ -60,7 +78,7 @@ namespace Timely
             {
                 Aspect = Aspect.Fill
             };
-            btnAccept.SetBinding(Image.SourceProperty, "AcceptButtonImage");
+            btnAccept.SetBinding(ImageButton.SourceProperty, "AcceptButtonImage");
             btnAccept.SetBinding(ImageButton.TappedCommandProperty, "AcceptButtonCommand");
             btnAccept.SetBinding(ImageButton.IsEnabledProperty, "AcceptButtonEnabled", BindingMode.TwoWay);
 
@@ -77,21 +95,23 @@ namespace Timely
                 Format = Constants.DateFormat,
                 TextColor = Constants.TextColor
             };
-            dpStartDate.SetBinding(DatePicker.DateProperty, "StartDate");
+            dpStartDate.SetBinding(DatePicker.DateProperty, "StartDate", BindingMode.TwoWay);
+            dpStartDate.SetBinding(DatePicker.MaximumDateProperty, "MaximumStartDate");
 
             TimePicker tpStartTime = new TimePicker()
             {
                 Format = Constants.TimeSecondsFormat,
                 TextColor = Constants.TextColor
             };
-            tpStartTime.SetBinding(TimePicker.TimeProperty, "StartTime");
+            tpStartTime.SetBinding(TimePicker.TimeProperty, "StartTime", BindingMode.TwoWay);
 
             DatePicker dpEndDate = new DatePicker()
             {
                 Format = Constants.DateFormat,
                 TextColor = Constants.TextColor
             };
-            dpEndDate.SetBinding(DatePicker.DateProperty, "EndDate");
+            dpEndDate.SetBinding(DatePicker.DateProperty, "EndDate", BindingMode.TwoWay);
+            dpEndDate.SetBinding(DatePicker.MinimumDateProperty, "MinimumEndDate");
             dpEndDate.SetBinding(DatePicker.IsVisibleProperty, "EndPickersVisible");
 
             TimePicker tpEndTime = new TimePicker()
@@ -99,7 +119,7 @@ namespace Timely
                 Format = Constants.TimeSecondsFormat,
                 TextColor = Constants.TextColor
             };
-            tpEndTime.SetBinding(TimePicker.TimeProperty, "EndTime");
+            tpEndTime.SetBinding(TimePicker.TimeProperty, "EndTime", BindingMode.TwoWay);
             tpEndTime.SetBinding(TimePicker.IsVisibleProperty, "EndPickersVisible");
 
             rl.AddView(btnBackArrow, Constraint.RelativeToParent((p) =>
@@ -242,6 +262,13 @@ namespace Timely
             Constraint.Constant(acceptBtnWidth),
             Constraint.Constant(acceptBtnHeight)
             );
+        }
+
+        protected override void OnDisappearing()
+        {
+            base.OnDisappearing();
+            MessagingCenter.Unsubscribe<EditActivityPeriodViewModel, ConfirmationData>(this, EditActivityPeriodViewModel.AcceptMessageString);
+            MessagingCenter.Unsubscribe<EditActivityPeriodViewModel, ConfirmationData>(this, EditActivityPeriodViewModel.DeleteMessageString);
         }
     }
 }

@@ -37,7 +37,7 @@ namespace Timely
                                            select t).ToList();
                             if (apQuery.Count > 0)
                             {
-                                act.ActivityPeriods.AddRange(apQuery);
+                                act.AddActivityPeriods(apQuery);
                             }
                         }
                     }
@@ -54,7 +54,7 @@ namespace Timely
                 List<ActivityPeriod> aps = await FindAllPeriodsAsync(act.ID);
                 if (aps.Count > 0)
                 {
-                    act.ActivityPeriods.AddRange(aps);
+                    act.AddActivityPeriods(aps);
                 }
                 return act;
             });
@@ -87,14 +87,14 @@ namespace Timely
                     foreach (var ap in act.ActivityPeriods)
                     {
                         ap.ActivityID = id;
-                        await InsertPeriodAsync(ap);
+                        await InsertAsync(ap);
                     }
                 }
                 OnPropertyChanged("Activities");
             });
         }
 
-        public Task InsertAllAsync(List<Activity> list)
+        public Task InsertAsync(List<Activity> list)
         {
             return Task.Run(async () =>
             {
@@ -105,7 +105,7 @@ namespace Timely
             });
         }
 
-        private Task InsertPeriodAsync(ActivityPeriod ap)
+        public Task InsertAsync(ActivityPeriod ap)
         {
             if (ap.ID == 0)
             {
@@ -123,25 +123,30 @@ namespace Timely
             {
                 if (act.ActivityPeriods.Count > 0)
                 {
-                    await DeletePeriodsAsync(act.ActivityPeriods);
+                    await DeleteAsync(act.ActivityPeriods);
                 }
                 await Database.DeleteAsync(act);
                 OnPropertyChanged("Activities");
             });
         }
 
-        private Task DeletePeriodAsync(ActivityPeriod ap)
+        public Task DeleteAsync(ActivityPeriod ap, bool doUpdate = true)
         {
-            return Database.DeleteAsync(ap);
+            return Task.Run(async () =>
+            {
+                await Database.DeleteAsync(ap);
+                if (doUpdate)
+                    OnPropertyChanged("Activities");
+            });
         }
 
-        private Task DeletePeriodsAsync(List<ActivityPeriod> aps)
+        public Task DeleteAsync(List<ActivityPeriod> aps)
         {
-            return Task.Run(() =>
+            return Task.Run(async () =>
             {
                 foreach (var ap in aps)
                 {
-                    DeletePeriodAsync(ap);
+                    await DeleteAsync(ap, false);
                 }
             });
         }

@@ -51,7 +51,7 @@ namespace Timely.ViewModels
                         //Start button pressed
                         ActivityPeriod ap = new ActivityPeriod();
                         ap.StartTime = DateTime.Now;
-                        Act.ActivityPeriods.Add(ap);
+                        Act.AddActivityPeriod(ap);
                         OnPropertyChanged("History");
                         OnPropertyChanged("StartTimeDisplay");
                         OnPropertyChanged("StartTimeVisible");
@@ -62,7 +62,10 @@ namespace Timely.ViewModels
                         {
                             OnPropertyChanged("TimeElapsed");
                             if (Act.Active)
+                            {
                                 Act.CurrentActiveActivityPeriod.OnPropertyChanged("TimeElapsedDisplay");
+                                Act.OnPropertyChanged("TimeElapsedDisplay");
+                            }
                             return Act.Active;
                         });
                         App.ActivityDatabase.InsertAsync(Act);
@@ -240,6 +243,13 @@ namespace Timely.ViewModels
         {
             Navigation = navigation;
             Act = act;
+            Act.PropertyChanged += (sender, e) =>
+            {
+                if (e.PropertyName == "ActivityPeriodsSorted")
+                    OnPropertyChanged("History");
+                if (e.PropertyName == "TimeElapsedDisplay")
+                    OnPropertyChanged("TimeElapsed");
+            };
             if (Act.Active)
             {
                 OnPropertyChanged("ActivityBtnImageSource");

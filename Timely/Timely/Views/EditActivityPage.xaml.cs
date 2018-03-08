@@ -18,6 +18,16 @@ namespace Timely
             BindingContext = new EditActivityViewModel(Navigation, act, propChanged);
             InitializeComponent();
             InitialiseElements();
+            MessagingCenter.Subscribe<EditActivityViewModel, ConfirmationData>(this, EditActivityViewModel.DeleteConfirmationMessageString, async (vm, cd) =>
+            {
+                var answer = await DisplayAlert(cd.Title, cd.Message, cd.Accept, cd.Cancel);
+                if (answer)
+                {
+                    await vm.DeleteActivity();
+                    Navigation.PopModalAsync();
+                    await Navigation.PopModalAsync();
+                }
+            });
         }
 
         private void InitialiseElements()
@@ -48,14 +58,6 @@ namespace Timely
             imgAcceptBtn.SetBinding(ImageButton.TappedCommandProperty, "AcceptButtonCommand");
             imgAcceptBtn.SetBinding(ImageButton.IsEnabledProperty, "AcceptButtonEnabled", BindingMode.TwoWay);
             imgAcceptBtn.SetBinding(Image.SourceProperty, "AcceptButtonImage");
-
-            ImageButton imgClearHistoryBtn = new ImageButton()
-            {
-                Source = "clearhistorybtn.png",
-                Aspect = Aspect.Fill
-            };
-            imgClearHistoryBtn.SetBinding(ImageButton.TappedCommandProperty, "ClearHistoryCommand");
-            imgClearHistoryBtn.SetBinding(ImageButton.IsEnabledProperty, "ClearHistoryButtonEnabled", BindingMode.TwoWay);
 
             ImageButton imgDeleteBtn = new ImageButton()
             {
@@ -91,44 +93,6 @@ namespace Timely
             entryCategory.SetBinding(Entry.TextProperty, "Category", BindingMode.TwoWay);
 
             //X, Y, Width, Height
-            rl.AddView(imgBackBtn, Constraint.RelativeToParent(p =>
-            {
-                return p.X + 10;
-            }),
-            Constraint.RelativeToParent(p =>
-            {
-                return p.Y + 10;
-            }),
-            Constraint.Constant(32),
-            Constraint.Constant(32)
-            );
-
-            int clearHistoryWidth = 133;
-            rl.AddView(imgClearHistoryBtn, Constraint.RelativeToParent(p =>
-            {
-                return p.Width - clearHistoryWidth - 15;
-            }),
-            Constraint.RelativeToParent(p =>
-            {
-                return p.Y + 15;
-            }),
-            Constraint.Constant(clearHistoryWidth),
-            Constraint.Constant(30)
-            );
-
-            int deleteBtnSize = 40;
-            rl.AddView(imgDeleteBtn, Constraint.RelativeToParent(p =>
-            {
-                return p.Width - deleteBtnSize - 15;
-            }),
-            Constraint.RelativeToView(imgClearHistoryBtn, (p, s) =>
-            {
-                return s.Y + s.Height + 25;
-            }),
-            Constraint.Constant(deleteBtnSize),
-            Constraint.Constant(deleteBtnSize)
-            );
-
             rl.AddView(labelTitle, Constraint.RelativeToParent(p =>
             {
                 return p.X;
@@ -142,6 +106,31 @@ namespace Timely
                 return p.Width;
             }),
             Constraint.Constant(32)
+            );
+
+            rl.AddView(imgBackBtn, Constraint.RelativeToParent(p =>
+            {
+                return p.X + 10;
+            }),
+            Constraint.RelativeToParent(p =>
+            {
+                return p.Y + 10;
+            }),
+            Constraint.Constant(32),
+            Constraint.Constant(32)
+            );
+
+            int deleteBtnSize = 40;
+            rl.AddView(imgDeleteBtn, Constraint.RelativeToParent(p =>
+            {
+                return p.Width - deleteBtnSize - 10;
+            }),
+            Constraint.RelativeToParent((p) =>
+            {
+                return p.Y + 10;
+            }),
+            Constraint.Constant(deleteBtnSize),
+            Constraint.Constant(deleteBtnSize)
             );
 
             int entryWidthMargin = 40;
@@ -221,6 +210,12 @@ namespace Timely
             Constraint.Constant(btnWidth),
             Constraint.Constant(41)
             );
+        }
+
+        protected override void OnDisappearing()
+        {
+            base.OnDisappearing();
+            MessagingCenter.Unsubscribe<EditActivityViewModel, ConfirmationData>(this, EditActivityViewModel.DeleteConfirmationMessageString);
         }
 
     }

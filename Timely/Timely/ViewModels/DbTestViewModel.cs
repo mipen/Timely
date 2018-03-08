@@ -189,7 +189,7 @@ namespace Timely.ViewModels
                 Thread.Sleep(5000);
                 watch = Stopwatch.StartNew();
                 List<Activity> list = await ActivityBuilder.GetActivitiesAsync(500, this);
-                await App.ActivityDatabase.InsertAllAsync(list);
+                await App.ActivityDatabase.InsertAsync(list);
                 await ReloadDatabase();
                 watch.Stop();
                 ElapsedTime = watch.ElapsedMilliseconds;

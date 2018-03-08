@@ -112,7 +112,6 @@ namespace Timely
                 ItemTemplate = new DataTemplate(typeof(ActivityPeriodCell))
             };
             listViewHistory.ItemSelected += (sender, e) => { ((ListView)sender).SelectedItem = null; };
-            //listViewHistory.SetBinding(ListView.SelectedItemProperty, "SelectedAP", BindingMode.OneWayToSource);
             listViewHistory.SetBinding(AppListView.TapCommandProperty, "HistoryItemTappedCommand",BindingMode.OneWay);
             listViewHistory.SetBinding(ListView.ItemsSourceProperty, "History");
             #endregion

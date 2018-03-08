@@ -68,8 +68,8 @@ namespace Timely
                 if (ActivityPeriods.Count > 0)
                 {
                     var q = (from t in ActivityPeriodsSorted
-                            where t.Active == false
-                            select t);
+                             where t.Active == false
+                             select t);
                     return q.Count() > 0 ? q.First() : null;
                 }
                 else
@@ -193,7 +193,60 @@ namespace Timely
 
         public Activity()
         {
+            PropertyChanged += (sender, e) =>
+            {
+                if (e.PropertyName == "ActivityPeriods")
+                    OnPropertyChanged("ActivityPeriodsSorted");
+            };
+        }
 
+        public void AddActivityPeriod(ActivityPeriod ap, bool doUpdates = true)
+        {
+            ap.ActivityID = ID;
+            ap.Activity = this;
+            ActivityPeriods.Add(ap);
+            if (doUpdates)
+            {
+                OnPropertyChanged("ActivityPeriods");
+                OnPropertyChanged("LastCompletedPeriod");
+                OnPropertyChanged("StartTimeDisplay");
+                OnPropertyChanged("EndTimeDisplay");
+                OnPropertyChanged("LastStartDateDisplay");
+                OnPropertyChanged("LastEndDateDisplay");
+                OnPropertyChanged("TimeElapsedDisplay");
+            }
+        }
+
+        public void AddActivityPeriods(List<ActivityPeriod> aps)
+        {
+            foreach (var ap in aps)
+            {
+                AddActivityPeriod(ap, false);
+            }
+            OnPropertyChanged("ActivityPeriods");
+            OnPropertyChanged("ActivityPeriodsSorted");
+            OnPropertyChanged("LastCompletedPeriod");
+            OnPropertyChanged("StartTimeDisplay");
+            OnPropertyChanged("EndTimeDisplay");
+            OnPropertyChanged("LastStartDateDisplay");
+            OnPropertyChanged("LastEndDateDisplay");
+            OnPropertyChanged("TimeElapsedDisplay");
+        }
+
+        public void DeleteActivityPeriod(ActivityPeriod ap)
+        {
+            ActivityPeriods.Remove(ap);
+            System.Threading.Tasks.Task.Run(async () =>
+            {
+                await App.ActivityDatabase.DeleteAsync(ap);
+            });
+            OnPropertyChanged("ActivityPeriods");
+            OnPropertyChanged("LastCompletedPeriod");
+            OnPropertyChanged("StartTimeDisplay");
+            OnPropertyChanged("EndTimeDisplay");
+            OnPropertyChanged("LastStartDateDisplay");
+            OnPropertyChanged("LastEndDateDisplay");
+            OnPropertyChanged("TimeElapsedDisplay");
         }
 
         public virtual void OnPropertyChanged(string propertyName)
